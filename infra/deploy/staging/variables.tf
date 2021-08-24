@@ -37,3 +37,30 @@ variable "vpc_private_subnets" {
     type = list(string)
     default = [ "172.16.10.0/24","172.16.11.0/24" ]
 }
+
+
+variable "db_name" {
+    type = string
+    default = "nhannguyenpostgres"
+}
+variable "db_instance_class" {
+    type = string
+    default = "db.t2.micro"
+}
+
+variable "db_username" {
+    type = string
+    default = "nhannguyen"
+}
+
+variable "db_port" {
+    type = number  
+    default = 55432
+  
+}
+
+variable "ssm_db_credentials" {
+    type = string
+    default = "/rds/postgress/credentials"
+  
+}
