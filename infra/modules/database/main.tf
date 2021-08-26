@@ -1,10 +1,6 @@
-resource "aws_db_subnet_group" "default" {
-  name       = "main"
+resource "aws_db_subnet_group" "db_subnet_group" {
+  name       = "db_subnet_group"
   subnet_ids = var.db_subnet
-
-  tags = {
-    Name = "My DB subnet group"
-  }
 }
 
 
@@ -14,10 +10,11 @@ resource "aws_db_instance" "database_instance" {
     engine_version = "12.6"
     instance_class = var.db_instance_class
     name = var.db_name
+    identifier = var.db_identifier
     username = var.db_username
     password = var.db_password
     port = var.db_port
-    db_subnet_group_name = aws_db_subnet_group.default.name
+    db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
     vpc_security_group_ids = var.db_security_group
     
     skip_final_snapshot  = true
@@ -26,8 +23,21 @@ resource "aws_db_instance" "database_instance" {
 }
 
 
-resource "aws_ssm_parameter" "database_credentials" {
+resource "aws_ssm_parameter" "ssm_database_credential" {
     name = var.ssm_db_credentials
     type = "SecureString"
     value = jsonencode({"db_username":"${var.db_username}","db_password":"${var.db_password}","db_port":"${var.db_port}","db_address":"${aws_db_instance.database_instance.address}"})
+}
+
+resource "aws_iam_policy" "pol_get_ssm_db_credential" {
+    name = "get_ssm_db_credential"
+    path = "/"
+    policy = jsonencode({
+      "Version": "2012-10-17",
+      "Statement": [{
+          "Action" : "ssm:GetParameter"
+          "Effect": "Allow"
+          "Resource": aws_ssm_parameter.ssm_database_credential.arn
+      }]
+    })
 }

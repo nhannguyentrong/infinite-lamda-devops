@@ -3,19 +3,6 @@ resource "aws_security_group" "db_sg" {
     vpc_id = module.vpc_custom.vpc_id
 }
 
-
-
-# data "terraform_remote_state" "db" {
-#   backend = "s3"
-
-#   config = {
-#     bucket = "infinite-terraform-tfstate"
-#     key    = "terraform.tfstate"
-#     region = "us-west-2"
-#   }
-# }
-
-
 resource "aws_security_group_rule" "db_sgr_inbound" {
     type = "ingress"
     from_port = var.db_port
@@ -44,6 +31,7 @@ module "database_instance" {
     db_instance_class = var.db_instance_class
     db_name = var.db_name
     db_username = var.db_username
+    db_identifier = var.db_identifier
     db_password = random_password.db_password.result
     db_port = var.db_port
     db_subnet = module.vpc_custom.private_subnets
