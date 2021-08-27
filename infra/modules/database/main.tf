@@ -26,7 +26,7 @@ resource "aws_db_instance" "database_instance" {
 resource "aws_ssm_parameter" "ssm_database_credential" {
     name = var.ssm_db_credentials
     type = "SecureString"
-    value = jsonencode({"db_username":"${var.db_username}","db_password":"${var.db_password}","db_port":"${var.db_port}","db_address":"${aws_db_instance.database_instance.address}"})
+    value = jsonencode({"db_name":"${var.db_name}","db_username":"${var.db_username}","db_password":"${var.db_password}","db_port":"${var.db_port}","db_address":"${aws_db_instance.database_instance.address}"})
 }
 
 resource "aws_iam_policy" "pol_get_ssm_db_credential" {
