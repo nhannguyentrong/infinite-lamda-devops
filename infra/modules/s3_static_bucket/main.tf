@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "s3_static_web" {
   website {
     index_document = "index.html"
   }
-  tags = var.tags
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_policy" "s3_static_web_policy" {

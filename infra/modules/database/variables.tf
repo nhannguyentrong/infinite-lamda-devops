@@ -22,6 +22,11 @@ variable "db_port" {
   
 }
 
+variable "publicly_accessible" {
+    type = bool
+  
+}
+
 variable "db_security_group" {
     type = list(string)
 }

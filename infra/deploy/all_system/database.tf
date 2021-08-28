@@ -34,7 +34,10 @@ module "database_instance" {
     db_identifier = var.db_identifier
     db_password = random_password.db_password.result
     db_port = var.db_port
-    db_subnet = module.vpc_custom.private_subnets
+    db_subnet = module.vpc_custom.public_subnets
+    # db_subnet = module.vpc_custom.private_subnets
     db_security_group = [aws_security_group.db_sg.id]
     ssm_db_credentials = var.ssm_db_credentials
+
+    publicly_accessible = true
 }
