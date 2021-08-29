@@ -108,17 +108,7 @@ resource "aws_codebuild_project" "codebuild_docker_image" {
         name ="REPOSITORY_URI"
         type = "PLAINTEXT"
         value = "${aws_ecr_repository.erc_repository.repository_url}"
-      }
-      environment_variable {
-        name ="DOCKERHUB_PASSWORD"
-        type = "PLAINTEXT"
-        value = "satnhanbs"
-      }
-      environment_variable {
-        name ="DOCKERHUB_USERNAME"
-        type = "PLAINTEXT"
-        value = "jamecollins"
-      }        
+      }    
   }
 
   logs_config {
