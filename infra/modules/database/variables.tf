@@ -27,14 +27,6 @@ variable "publicly_accessible" {
   
 }
 
-variable "db_security_group" {
-    type = list(string)
-}
-
-variable "db_subnet" {
-    type = any
-}
-
 variable "ssm_db_credentials" {
     type = string
   

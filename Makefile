@@ -31,3 +31,10 @@ deploy_docker:
 		terraform init && \
 		terraform plan -out s1.tfplan && \
 		terraform apply s1.tfplan 	
+
+deploy_all:
+	@cd infra/deploy/all_system && \
+		terraform init && \
+		terraform plan -out s1.tfplan && \
+		terraform apply s1.tfplan 	
+	

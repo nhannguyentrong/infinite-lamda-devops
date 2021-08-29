@@ -15,7 +15,7 @@ variable "repository_name_flask" {
 }
 
 # Repository name: need create before
-variable "branch_name" {
+variable "repository_branch_flask" {
   type = string
   default = "main"
 }

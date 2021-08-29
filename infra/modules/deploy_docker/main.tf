@@ -1,5 +1,10 @@
+resource "random_string" "resource_name" {
+  length = 5
+  special = false
+  upper = false
+}
 resource "aws_ecr_repository" "erc_repository" {
-    name = var.erc_repository_name
+    name = "${var.erc_repository_name}-${random_string.resource_name.result}"
 }
 
 data "local_file" "buildspec" {
@@ -11,19 +16,15 @@ data "aws_codecommit_repository" "repository_name" {
   repository_name = var.repository_name
 }
 
-resource "random_string" "s3_artifacts_name" {
-  length = 5
-  special = false
-  upper = false
-}
+
 
 resource "aws_s3_bucket" "s3_artifacts" {
-  bucket        = "codepipeline-artifacts-${random_string.s3_artifacts_name.result}"
+  bucket        = "codepipeline-artifacts-${random_string.resource_name.result}"
   force_destroy = true
 }
 
 resource "aws_iam_role" "role_code_build" {
-  name = "role_code_build_${var.code_build_project}_${random_string.s3_artifacts_name.result}"
+  name = "role_code_build_${var.code_build_project}_${random_string.resource_name.result}"
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
@@ -40,7 +41,7 @@ resource "aws_iam_role" "role_code_build" {
 }
 
 resource "aws_iam_role_policy" "pol_codebuild" {
-  name = "policy_codebuild_${var.code_build_project}_${random_string.s3_artifacts_name.result}"
+  name = "policy_codebuild_${var.code_build_project}_${random_string.resource_name.result}"
   role = aws_iam_role.role_code_build.id
 
   policy = jsonencode({
@@ -83,9 +84,9 @@ resource "aws_iam_role_policy" "pol_codebuild" {
 }
 
 resource "aws_codebuild_project" "codebuild_docker_image" {
+  name = "${var.code_build_project}-${random_string.resource_name.result}"
   badge_enabled  = false
   build_timeout  = 60
-  name           = var.code_build_project
   queued_timeout = 480
   service_role   = aws_iam_role.role_code_build.arn
 
@@ -145,7 +146,7 @@ resource "aws_codebuild_project" "codebuild_docker_image" {
 }
 
 resource "aws_iam_role" "role_code_pipeline" {
-  name = "role_code_pipeline_${var.code_build_project}"
+  name = "role_code_pipeline_${var.code_build_project}_${random_string.resource_name.result}"
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
@@ -162,7 +163,7 @@ resource "aws_iam_role" "role_code_pipeline" {
 }
 
 resource "aws_iam_role_policy" "pol_codepipeline" {
-  name = "policy_codepipeline_${var.code_build_project}_${random_string.s3_artifacts_name.result}"
+  name = "policy_codepipeline_${var.code_build_project}_${random_string.resource_name.result}"
   role = aws_iam_role.role_code_pipeline.id
   policy = jsonencode({
       "Version" : "2012-10-17",
@@ -214,7 +215,7 @@ resource "aws_iam_role_policy" "pol_codepipeline" {
 }
 
 resource "aws_codepipeline" "code_pipeline" {
-  name = "code_pipeline_${var.code_build_project}_${random_string.s3_artifacts_name.result}"
+  name = "code_pipeline_${var.code_build_project}_${random_string.resource_name.result}"
   role_arn = aws_iam_role.role_code_pipeline.arn
   artifact_store {
     location = aws_s3_bucket.s3_artifacts.id

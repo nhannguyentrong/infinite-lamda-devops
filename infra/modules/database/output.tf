@@ -11,7 +11,7 @@ output "address" {
 }
 
 output "ssm_database_credential" {
-    value = aws_ssm_parameter.ssm_database_credential.arn
+    value = aws_ssm_parameter.ssm_database_credential.name
 }
 
 output "pol_get_ssm_db_credential" {

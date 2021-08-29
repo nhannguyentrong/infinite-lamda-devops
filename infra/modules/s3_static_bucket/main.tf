@@ -1,5 +1,10 @@
+resource "random_string" "resource_name" {
+  length = 5
+  special = false
+  upper = false
+}
 resource "aws_s3_bucket" "s3_static_web" {
-  bucket = "${var.s3_bucket_name}"
+  bucket = "${var.s3_bucket_name}-${random_string.resource_name.result}"
   acl    = "public-read"
   website {
     index_document = "index.html"

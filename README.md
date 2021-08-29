@@ -56,9 +56,9 @@ Run command
 
 The result will be:
 
-     db_address = "nhannguyen-postgres.c0cpxgcrmoev.us-west-2.rds.amazonaws.com"
-     db_endpoint = "nhannguyen-postgres.c0cpxgcrmoev.us-west-2.rds.amazonaws.com:55432"
-     ssm_db_credentials = "/rds/postgress/credentials"
+     db_address = "nhannguyen-postgres-5jirn.c0cpxgcrmoev.us-west-2.rds.amazonaws.com"
+     db_endpoint = "nhannguyen-postgres-5jirn.c0cpxgcrmoev.us-west-2.rds.amazonaws.com:55432"
+     ssm_db_credentials = "/rds/postgress/credentials_5jirn"
 
 3. Create a Python application which connects to the RDS instance and print out
 
@@ -88,8 +88,24 @@ Open browser and access to address: `nhan-nguyen-08282021-c2jrh.s3-website-us-we
 
 ![flask_page](./image/deploy_static.png)
 
+In aws console
+
+![flask_page_pipeline](./image/deploy_static_pipeline.png)
+
 For build docker image and upload this to ECR, run command
 
 
      make deploy_docker
 
+In aws console
+
+![deploy_docker_pipeline](./image/deploy_docker_pipeline.png)
+
+In AWS ECR
+
+![deploy_docker_ecr](./image/deploy_docker_ecr.png)
+
+5. Create all resource by 1 command
+
+
+     make deploy_all

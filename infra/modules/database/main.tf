@@ -3,9 +3,37 @@ resource "random_string" "resource_name" {
   special = false
   upper = false
 }
+resource "aws_security_group" "db_sg" {
+    name = "database-security-group-${random_string.resource_name.result}"
+    vpc_id = module.vpc_custom.vpc_id
+    tags = {
+      "Name" = "database-security-group-${random_string.resource_name.result}"
+    }
+}
+
+resource "aws_security_group_rule" "db_sgr_inbound" {
+    type = "ingress"
+    from_port = var.db_port
+    to_port = var.db_port
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    security_group_id = aws_security_group.db_sg.id
+}
+
+resource "aws_security_group_rule" "db_sgr_outbound" {
+    type = "egress"
+    from_port = 0
+    to_port = 0
+    protocol = -1
+    cidr_blocks = ["0.0.0.0/0"]
+    security_group_id = aws_security_group.db_sg.id
+    
+}
+
+
 resource "aws_db_subnet_group" "db_subnet_group" {
   name       = "db_subnet_group_${random_string.resource_name.result}"
-  subnet_ids = var.db_subnet
+  subnet_ids = module.vpc_custom.public_subnets
 }
 
 
@@ -20,7 +48,7 @@ resource "aws_db_instance" "database_instance" {
     password = var.db_password
     port = var.db_port
     db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
-    vpc_security_group_ids = var.db_security_group
+    vpc_security_group_ids = [aws_security_group.db_sg.id]
     
     skip_final_snapshot  = true
     backup_retention_period = 0

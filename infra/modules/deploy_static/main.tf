@@ -76,7 +76,7 @@ resource "aws_iam_role_policy" "pol_codepipeline" {
 }
 
 resource "aws_codepipeline" "deploy_pipeline" {
-  name     = var.pipeline_name
+  name     = "${var.pipeline_name}-${random_string.s3_artifacts_name.result}"
   role_arn = aws_iam_role.role_code_pipeline.arn
 
   artifact_store {
