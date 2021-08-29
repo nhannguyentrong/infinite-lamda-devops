@@ -109,3 +109,5 @@ In AWS ECR
 
 
      make deploy_all
+
+
