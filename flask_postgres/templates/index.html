@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+<title>Flask Page</title>
+</head>
+<body>
+<h1>Database information</h1>
+{% if error == "true" %}
+    <h2>Have error when  connect to database. Check it again </h2>
+{% else %}
+    <h2>Connection successfull</h2>
+    <h3> Database information</h3>
+    <li>Database Name: {{data["dbname"]}}</li>
+    <li>Database User Name: {{data["user"]}}</li>
+    <li>Database Host: {{data["host"]}}</li>
+    <li>Database Port: {{data["port"]}}</li>
+    <li>Database Version: {{rds_version}}</li>
+{% endif %}
+</body>
+</html>  
