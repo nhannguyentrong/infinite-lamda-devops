@@ -1,5 +1,10 @@
+resource "random_string" "resource_name" {
+  length = 5
+  special = false
+  upper = false
+}
 resource "aws_db_subnet_group" "db_subnet_group" {
-  name       = "db_subnet_group"
+  name       = "db_subnet_group_${random_string.resource_name.result}"
   subnet_ids = var.db_subnet
 }
 
@@ -37,7 +42,7 @@ resource "aws_ssm_parameter" "ssm_database_credential" {
 }
 
 resource "aws_iam_policy" "pol_get_ssm_db_credential" {
-    name = "get_ssm_db_credential"
+    name = "get_ssm_db_credential_${random_string.resource_name.result}"
     path = "/"
     policy = jsonencode({
       "Version": "2012-10-17",

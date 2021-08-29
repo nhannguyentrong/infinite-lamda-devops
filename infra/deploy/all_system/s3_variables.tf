@@ -1,4 +1,4 @@
 variable "s3_bucket_name" {
     type = string
-    default = "nhan-nguyen-08282021" 
+    default = "nhan-nguyen-08292021" 
 }

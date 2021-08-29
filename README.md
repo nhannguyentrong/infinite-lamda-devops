@@ -44,8 +44,8 @@ for initial backend for terraform project
 The result will be:
    
 
-     s3_static_bucket_name = "nhan-nguyen-08282021"
-     s3_static_website_endpoint = "nhan-nguyen-08282021.s3-website-us-west-2.amazonaws.com"
+     s3_static_bucket_name = "nhan-nguyen-08282021-c2jrh"
+     s3_static_website_endpoint = "nhan-nguyen-08282021-c2jrh.s3-website-us-west-2.amazonaws.com"
 
 2. Create a PostgreSQL RDS instance and Connection credentials should be stored in SSM ParameterStore
 
@@ -79,6 +79,14 @@ For deploy the static html, run command
 
 
      make deploy_static
+
+The result will be:
+
+     s3_static_bucket_endpoint = "nhan-nguyen-08282021-c2jrh.s3-website-us-west-2.amazonaws.com"
+
+Open browser and access to address: `nhan-nguyen-08282021-c2jrh.s3-website-us-west-2.amazonaws.com`. The result will be
+
+![flask_page](./image/deploy_static.png)
 
 For build docker image and upload this to ECR, run command
 

@@ -21,7 +21,7 @@ resource "aws_s3_bucket" "s3_artifacts" {
 }
 
 resource "aws_iam_role" "role_code_pipeline" {
-  name = "role_code_pipeline_${var.project}"
+  name = "role_code_pipeline_${var.project}_${random_string.s3_artifacts_name.result}"
 
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -38,7 +38,7 @@ resource "aws_iam_role" "role_code_pipeline" {
 }
 
 resource "aws_iam_role_policy" "pol_codepipeline" {
-  name = "policy_codepipeline_${var.project}"
+  name = "policy_codepipeline_${var.project}_${random_string.s3_artifacts_name.result}"
   role = aws_iam_role.role_code_pipeline.id
 
   policy = jsonencode(

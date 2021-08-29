@@ -23,7 +23,7 @@ resource "aws_s3_bucket" "s3_artifacts" {
 }
 
 resource "aws_iam_role" "role_code_build" {
-  name = "role_code_build_${var.code_build_project}"
+  name = "role_code_build_${var.code_build_project}_${random_string.s3_artifacts_name.result}"
 
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
@@ -40,7 +40,7 @@ resource "aws_iam_role" "role_code_build" {
 }
 
 resource "aws_iam_role_policy" "pol_codebuild" {
-  name = "policy_codebuild_${var.code_build_project}"
+  name = "policy_codebuild_${var.code_build_project}_${random_string.s3_artifacts_name.result}"
   role = aws_iam_role.role_code_build.id
 
   policy = jsonencode({
@@ -162,7 +162,7 @@ resource "aws_iam_role" "role_code_pipeline" {
 }
 
 resource "aws_iam_role_policy" "pol_codepipeline" {
-  name = "policy_codepipeline_${var.code_build_project}"
+  name = "policy_codepipeline_${var.code_build_project}_${random_string.s3_artifacts_name.result}"
   role = aws_iam_role.role_code_pipeline.id
   policy = jsonencode({
       "Version" : "2012-10-17",
@@ -191,16 +191,16 @@ resource "aws_iam_role_policy" "pol_codepipeline" {
           ],
           "Resource" :"${data.aws_codecommit_repository.repository_name.arn}"        
         },
-        {
-            "Effect" : "Allow",
-            "Action": [
-                "logs:CreateLogGroup",
-                "logs:PutLogEvents",
-                "logs:CreateLogStream",              
-                "ecr:*",
-            ],
-            "Resource": "*"
-        },        
+        # {
+        #     "Effect" : "Allow",
+        #     "Action": [
+        #         "logs:CreateLogGroup",
+        #         "logs:PutLogEvents",
+        #         "logs:CreateLogStream",              
+        #         "ecr:*",
+        #     ],
+        #     "Resource": "*"
+        # },        
         
         
         {
@@ -214,7 +214,7 @@ resource "aws_iam_role_policy" "pol_codepipeline" {
 }
 
 resource "aws_codepipeline" "code_pipeline" {
-  name = "code_pipeline_${var.code_build_project}"
+  name = "code_pipeline_${var.code_build_project}_${random_string.s3_artifacts_name.result}"
   role_arn = aws_iam_role.role_code_pipeline.arn
   artifact_store {
     location = aws_s3_bucket.s3_artifacts.id
