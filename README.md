@@ -69,6 +69,8 @@ Update the `env_file` file, change the the AWS_ACCESS_KEY, AWS_ACCESS_SECRET_KEY
 
 Open browser and access to address: `localhost:80801`. The result will be
 
+![flask_page](./image/flask_page.png)
+
 4. Create a CI pipeline deploy static html to s3,  build docker container and upload to registry
 - Upload all the file on `static_html` folder to repository name `static_html` have been created on preparation step
 - Upload all the file on `flask_postgress folder` to repository name `flask_postgress` have been created on preparation step
